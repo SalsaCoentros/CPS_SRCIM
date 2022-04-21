@@ -1,10 +1,12 @@
 package Transport;
 
+import Utilities.Constants;
 import jade.core.Agent;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Libraries.ITransport;
+import jade.domain.FIPAException;
 
 /**
  *
@@ -40,6 +42,11 @@ public class TransportAgent extends Agent {
         System.out.println("Transport Deployed: " + this.id + " Executes: " + Arrays.toString(associatedSkills));
 
         // TO DO: Register in DF
+        try{
+            Utilities.DFInteraction.RegisterInDF(this, this.associatedSkills, Constants.DFSERVICE_TRANSPORT);
+        } catch(FIPAException ex){
+            ex.printStackTrace();
+        }
         // TO DO: Add responder behaviour/s
     }
 

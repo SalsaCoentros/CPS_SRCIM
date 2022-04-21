@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Libraries.IResource;
+import jade.domain.FIPAException;
+import Utilities.Constants;
 
 /**
  *
@@ -42,7 +44,11 @@ public class ResourceAgent extends Agent {
         System.out.println("Resource Deployed: " + this.id + " Executes: " + Arrays.toString(associatedSkills));
 
         //TO DO: Register in DF with the corresponding skills as services
-
+        try{
+            Utilities.DFInteraction.RegisterInDF(this, this.associatedSkills, Constants.DFSERVICE_RESOURCE);
+        } catch(FIPAException ex){
+            ex.printStackTrace();
+        }
 
         // TO DO: Add responder behaviour/s
 
