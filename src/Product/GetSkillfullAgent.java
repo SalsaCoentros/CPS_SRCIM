@@ -9,18 +9,18 @@ import jade.lang.acl.ACLMessage;
 
 public class GetSkillfullAgent extends SimpleBehaviour {
 
-    Agent a;
+
     String Skill;
     private boolean finished = false;
+
     public GetSkillfullAgent (Agent a, String Skill) {
-        this.a = a;
+
         this.Skill = Skill;
     }
 
     @Override
     public void action() {
-        ACLMessage cfp = getCompetentAgents();
-        a.addBehaviour(new SkillNegotiation(a,cfp));
+        getCompetentAgents();
 
         finished = true; //ISTO DEVE CAUSAR PROBLEMAS CASO TENHA MAIS CENAS NA SEQ DEFINIDA NO PRODUCTAGENT!!
 
@@ -32,12 +32,12 @@ public class GetSkillfullAgent extends SimpleBehaviour {
     }
 
     // Returns a list of agents registered in the DF with a given skill
-    private ACLMessage getCompetentAgents () {
-        ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
+    private void getCompetentAgents () {
+        //ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
         DFAgentDescription [] SkillfulAgents = null;
 
         try {
-            SkillfulAgents = DFInteraction.SearchInDFByName(Skill,a);
+            SkillfulAgents = DFInteraction.SearchInDFByName(Skill,myAgent);
         } catch (FIPAException e) {
             e.printStackTrace();
         }
@@ -45,13 +45,12 @@ public class GetSkillfullAgent extends SimpleBehaviour {
             System.out.println("List of agents that can execute the skill " + this.Skill + " : ");
             for (int i = 0; i < SkillfulAgents.length; i++) {
                 System.out.println(SkillfulAgents[i].getName());
-                cfp.addReceiver(SkillfulAgents[i].getName());
+                ((ProductAgent)myAgent).cfp.addReceiver(SkillfulAgents[i].getName());
             }
         } else {
             System.out.println("There are no agents with the following skill: " + this.Skill);
             // we'll have to abort in this case
         }
-        return cfp;
     }
 
 

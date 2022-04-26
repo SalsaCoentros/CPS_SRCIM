@@ -2,6 +2,7 @@ package Product;
 
 import jade.core.Agent;
 import jade.core.behaviours.SequentialBehaviour;
+import jade.lang.acl.ACLMessage;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ public class ProductAgent extends Agent {
     
     String id;
     ArrayList<String> executionPlan = new ArrayList<>();
-
+    ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
     // TO DO: Add remaining attributes required for your implementation
     
     @Override
@@ -21,6 +22,8 @@ public class ProductAgent extends Agent {
         Object[] args = this.getArguments();
         this.id = (String) args[0];
         this.executionPlan = this.getExecutionList((String) args[1]);
+
+
         System.out.println("Product launched: " + this.id + " Requires: " + executionPlan);
         
         // TO DO: Add necessary behaviour/s for the product to control the flow
@@ -28,6 +31,7 @@ public class ProductAgent extends Agent {
 
         SequentialBehaviour sb = new SequentialBehaviour();
         sb.addSubBehaviour(new GetSkillfullAgent(this,"sk_q_c"));
+        sb.addSubBehaviour(new SkillNegotiation(this, cfp));
         this.addBehaviour(sb);
         
     }
