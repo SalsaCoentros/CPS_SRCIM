@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 import Libraries.IResource;
 import jade.domain.FIPAException;
 import Utilities.Constants;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 /**
  *
@@ -51,7 +53,7 @@ public class ResourceAgent extends Agent {
         }
 
         // TO DO: Add responder behaviour/s
-
+        this.addBehaviour(new OfferSkill(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
 
     }
 

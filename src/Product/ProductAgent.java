@@ -1,6 +1,8 @@
 package Product;
 
 import jade.core.Agent;
+import jade.core.behaviours.SequentialBehaviour;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +13,7 @@ public class ProductAgent extends Agent {
     
     String id;
     ArrayList<String> executionPlan = new ArrayList<>();
+
     // TO DO: Add remaining attributes required for your implementation
     
     @Override
@@ -21,7 +24,11 @@ public class ProductAgent extends Agent {
         System.out.println("Product launched: " + this.id + " Requires: " + executionPlan);
         
         // TO DO: Add necessary behaviour/s for the product to control the flow
-        // of its own production 
+        // of its own production
+
+        SequentialBehaviour sb = new SequentialBehaviour();
+        sb.addSubBehaviour(new GetSkillfullAgent(this,"sk_q_c"));
+        this.addBehaviour(sb);
         
     }
 
