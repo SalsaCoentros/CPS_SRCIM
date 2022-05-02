@@ -9,33 +9,29 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREResponder;
 import jade.proto.ContractNetResponder;
 
-public class SkillExecutionResponse extends Agent {
-
-    @Override
-    protected void setup(){
-        this.addBehaviour(new responder(this, MessageTemplate.MatchPerformative(ACLMessage.REQUEST)));
+public class SkillExecutionResponse extends AchieveREResponder {
+    public SkillExecutionResponse(Agent a, MessageTemplate mt) {
+        super(a, mt);
     }
 
-    private class responder extends AchieveREResponder {
-        public responder(Agent a, MessageTemplate mt) {
-            super(a, mt);
-        }
+    @Override
+    protected ACLMessage handleRequest (ACLMessage request) throws NotUnderstoodException, RefuseException{
+        String skill = request.getContent();
+        System.out.println(myAgent.getLocalName() + " is about to execute the skill: " + skill);
+        //falta iniciar a skill aqui
+        System.out.println(myAgent.getLocalName() + ": Processing REQUEST message");
+        ACLMessage msg = request.createReply();
+        msg.setPerformative(ACLMessage.AGREE);
+        return msg;
+    }
 
-        @Override
-        protected ACLMessage handleRequest (ACLMessage request) throws NotUnderstoodException, RefuseException{
-            System.out.println(myAgent.getLocalName() + ": Processing REQUEST message");
-            ACLMessage msg = request.createReply();
-            msg.setPerformative(ACLMessage.AGREE);
-            return msg;
-        }
-
-        @Override
-        protected ACLMessage prepareResultNotification (ACLMessage request, ACLMessage response) throws FailureException{
-            System.out.println(myAgent.getLocalName() + ": Preparing result of REQUEST");
-            block(5000);
-            ACLMessage msg = request.createReply();
-            msg.setPerformative(ACLMessage.INFORM);
-            return msg;
-        }
+    @Override
+    protected ACLMessage prepareResultNotification (ACLMessage request, ACLMessage response) throws FailureException{
+        ((ResourceAgent)myAgent).reserved = false;
+        block(5000); //mudar para executar a skill
+        System.out.println(myAgent.getLocalName() + " has done the skill");
+        ACLMessage msg = request.createReply();
+        msg.setPerformative(ACLMessage.INFORM);
+        return msg;
     }
 }

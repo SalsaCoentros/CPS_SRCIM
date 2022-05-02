@@ -9,14 +9,10 @@ import jade.lang.acl.ACLMessage;
 
 public class GetSkillfullAgent extends SimpleBehaviour {
 
-
-    String Skill;
     private boolean finished = false;
 
-    public GetSkillfullAgent (Agent a, String Skill) {
+    public GetSkillfullAgent(Agent a){};
 
-        this.Skill = Skill;
-    }
 
     @Override
     public void action() {
@@ -36,18 +32,18 @@ public class GetSkillfullAgent extends SimpleBehaviour {
         DFAgentDescription [] SkillfulAgents = null;
 
         try {
-            SkillfulAgents = DFInteraction.SearchInDFByName(Skill,myAgent);
+            SkillfulAgents = DFInteraction.SearchInDFByName(((ProductAgent)myAgent).currentSkill,myAgent);
         } catch (FIPAException e) {
             e.printStackTrace();
         }
         if ( SkillfulAgents.length != 0 ) {
-            System.out.println("List of agents that can execute the skill " + this.Skill + " : ");
+            System.out.println("List of agents that can execute the skill " + ((ProductAgent)myAgent).currentSkill + " : ");
             for (int i = 0; i < SkillfulAgents.length; i++) {
                 System.out.println(SkillfulAgents[i].getName().getLocalName());
                 ((ProductAgent)myAgent).cfp.addReceiver(SkillfulAgents[i].getName());
             }
         } else {
-            System.out.println("There are no agents with the following skill: " + this.Skill);
+            System.out.println("There are no agents with the following skill: " + ((ProductAgent)myAgent).currentSkill);
             // we'll have to abort in this case
         }
     }

@@ -1,5 +1,6 @@
 package Product;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
@@ -60,6 +61,11 @@ public class SkillNegotiation extends ContractNetInitiator {
 
                 acceptances.add(reply);
             }
+
+            String agentName = ((ACLMessage)response.get(best_resource)).getSender().getLocalName();
+
+            ((ProductAgent)myAgent).msgExecuteSkill.addReceiver(new AID(agentName,false));
+            ((ProductAgent)myAgent).msgExecuteSkill.setContent(((ProductAgent)myAgent).currentSkill);
         }
 
 
