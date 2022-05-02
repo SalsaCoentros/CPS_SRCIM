@@ -22,7 +22,7 @@ public class ProductAgent extends Agent {
     ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
     DFAgentDescription reservedResource = null;
     ACLMessage msgExecuteSkill = new ACLMessage(ACLMessage.REQUEST);
-    String currentSkill = "sk_q_c";
+    String currentSkill = null; //"sk_q_c"
 
 
 
@@ -42,11 +42,11 @@ public class ProductAgent extends Agent {
 
         SequentialBehaviour sb = new SequentialBehaviour();
         for(int i = 0; i < executionPlan.size(); i++) {
-
-            sb.addSubBehaviour(new GetSkillfullAgent(this, currentSkill));
+            sb.addSubBehaviour(new newExecPlanStep(this, executionPlan.get(i)));
+            sb.addSubBehaviour(new GetSkillfullAgent(this));
             sb.addSubBehaviour(new SkillNegotiation(this, cfp));
             sb.addSubBehaviour(new SkillExecutionRequest(this, msgExecuteSkill));
-        }
+        }  //ISTO ESTA A DAR PROBLEMA PORQUE
         this.addBehaviour(sb);
         
     }
