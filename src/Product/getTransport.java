@@ -9,26 +9,9 @@ import jade.proto.ContractNetInitiator;
 
 import java.util.Vector;
 
-/*public class initiatorAgent_com  extends Agent {
-    @Override
-    protected void setup(){
-        /*
-        new ACLMessage - indicates
-        ACLMessage.CFP indicates FIPA ContractNet value 3
-        addReceiver -Adds a value to :receiver slot.
-        AID Constructor for an Agent-identifier
-            Parameters:
-                name - is the value for the slot name for the agent.
-                isGUID - indicates if the passed name is already a globally unique identifier or not.
-         */
-        /*ACLMessage msg = new ACLMessage(ACLMessage.CFP);
-        msg.addReceiver(new AID("responder", false));
-        this.addBehaviour(new initiator(this, msg));
-    }*/
-
     public class getTransport extends ContractNetInitiator {
 
-        DFAgentDescription [] SkilfullAgents = null;
+        //------------------------------ Methods ------------------------------//
         public getTransport(Agent a, ACLMessage msg){
             super(a, msg);
         }
@@ -37,25 +20,50 @@ import java.util.Vector;
         protected void handleInform(ACLMessage inform){
             System.out.println(myAgent.getLocalName() + ": INFORM message received");
         }
+
         @Override
         protected void handleAllResponses(Vector responses, Vector acceptances){
-            System.out.println(myAgent.getLocalName() + ": ALL PROPOSALS received");
-            // get() - Returns the element at the specified position in this Vector.
-            //It's necessary to cast the element of a vector
-            ACLMessage auxMsg = (ACLMessage) responses.get(0);
-            //Set a selection criteria to choose the Agent
 
-            try {
-                SkilfullAgents = DFInteraction.SearchInDFByName("sk_move", myAgent);
-            }catch(FIPAException e){
-                e.printStackTrace();
+            int best_proposal = 6;
+            int best_transport = -1;
+
+            System.out.println(myAgent.getLocalName() + ": ALL PROPOSALS received");
+
+            for (int i = 0; i<responses.size(); i++) {
+                ACLMessage msg = (ACLMessage) responses.get(i);
+
+                if (msg.getPerformative() == ACLMessage.PROPOSE) { //if their response is a proposition
+                    System.out.println(msg.getSender().getLocalName() + " sent a proposition.");
+                }
+
+                int proposal_value = Integer.parseInt(msg.getContent());
+
+                if (best_proposal == 6) {
+                    best_proposal = proposal_value;
+                    best_transport = i;
+                }
+
+                if (proposal_value < 6) {
+                    best_transport = i;
+                    best_proposal = proposal_value;
+                }
+
             }
 
-            ACLMessage reply = auxMsg.createReply();
-            //ACLMessage.ACCEPT_PROPOSAL indicates FIPA ContractNet with a zero value
-            reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-            // add() - Appends the specified element to the end of this Vector.
-            acceptances.add(reply);
+
+            for (int i = 0; i < responses.size(); i++) {
+                ACLMessage msg = (ACLMessage) responses.get(i);
+                ACLMessage reply = msg.createReply();
+
+                if (i == best_transport)  // SEND ACCEPT
+                    //ACLMessage.ACCEPT_PROPOSAL indicates FIPA ContractNet with a zero value
+                    reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+
+                else // SEND REFUSE
+                    reply.setPerformative((ACLMessage.REJECT_PROPOSAL));
+
+                acceptances.add(reply);
+            }
         }
 
 

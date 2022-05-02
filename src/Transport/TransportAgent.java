@@ -18,6 +18,7 @@ public class TransportAgent extends Agent {
     ITransport myLib;
     String description;
     String[] associatedSkills;
+    boolean reserved = false;
 
     @Override
     protected void setup() {
