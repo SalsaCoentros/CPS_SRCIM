@@ -1,5 +1,7 @@
 package Product;
 
+import Resource.ResourceAgent;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -18,6 +20,7 @@ public class ProductAgent extends Agent {
     ArrayList<String> executionPlan = new ArrayList<>();
     ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
     DFAgentDescription reservedResource = null;
+    AID reservedAgent = null;
 
 
 
