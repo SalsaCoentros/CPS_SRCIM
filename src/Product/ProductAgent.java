@@ -2,6 +2,8 @@ package Product;
 
 import jade.core.Agent;
 import jade.core.behaviours.SequentialBehaviour;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.gui.DFAgentDscDlg;
 import jade.lang.acl.ACLMessage;
 
 import java.util.ArrayList;
@@ -15,6 +17,10 @@ public class ProductAgent extends Agent {
     String id;
     ArrayList<String> executionPlan = new ArrayList<>();
     ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
+    DFAgentDescription reservedResource = null;
+
+
+
     // TO DO: Add remaining attributes required for your implementation
     
     @Override

@@ -22,8 +22,7 @@ public class GetSkillfullAgent extends SimpleBehaviour {
     public void action() {
         getCompetentAgents();
 
-        finished = true; //ISTO DEVE CAUSAR PROBLEMAS CASO TENHA MAIS CENAS NA SEQ DEFINIDA NO PRODUCTAGENT!!
-
+        finished = true;
     }
 
     @Override
@@ -44,7 +43,7 @@ public class GetSkillfullAgent extends SimpleBehaviour {
         if ( SkillfulAgents.length != 0 ) {
             System.out.println("List of agents that can execute the skill " + this.Skill + " : ");
             for (int i = 0; i < SkillfulAgents.length; i++) {
-                System.out.println(SkillfulAgents[i].getName());
+                System.out.println(SkillfulAgents[i].getName().getLocalName());
                 ((ProductAgent)myAgent).cfp.addReceiver(SkillfulAgents[i].getName());
             }
         } else {
