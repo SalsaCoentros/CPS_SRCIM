@@ -1,5 +1,6 @@
 package Resource;
 
+import Product.SkillExecutionRequest;
 import jade.core.Agent;
 import java.util.Arrays;
 import java.util.logging.Level;
