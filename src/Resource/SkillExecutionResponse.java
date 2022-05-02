@@ -24,6 +24,7 @@ public class SkillExecutionResponse extends Agent {
         @Override
         protected ACLMessage handleRequest (ACLMessage request) throws NotUnderstoodException, RefuseException{
             System.out.println(myAgent.getLocalName() + ": Processing REQUEST message");
+
             ACLMessage msg = request.createReply();
             msg.setPerformative(ACLMessage.AGREE);
             return msg;

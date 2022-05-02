@@ -8,28 +8,24 @@ import jade.proto.ContractNetInitiator;
 
 import java.util.Vector;
 
-public class SkillExecutionRequest extends Agent {
-    @Override
-    protected void setup(){
-        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-        msg.addReceiver(new AID("responder", false));
-        this.addBehaviour(new initiator(this, msg));
+
+public class SkillExecutionRequest extends AchieveREInitiator{
+
+    public SkillExecutionRequest(Agent a, ACLMessage msg){
+
+        super(a, msg);
+
+
     }
 
-    private class initiator extends AchieveREInitiator{
+    @Override
+    protected void handleAgree(ACLMessage agree){
+        System.out.println(myAgent.getLocalName() + ": AGREE message received");
+    }
 
-        public initiator(Agent a, ACLMessage msg){
-            super(a, msg);
-        }
-
-        @Override
-        protected void handleAgree(ACLMessage agree){
-            System.out.println(myAgent.getLocalName() + ": AGREE message received");
-        }
-
-        @Override
-        protected void handleInform(ACLMessage inform){
-            System.out.println(myAgent.getLocalName() + ": INFORM message received");
-        }
+    @Override
+    protected void handleInform(ACLMessage inform){
+        System.out.println(myAgent.getLocalName() + ": INFORM message received");
     }
 }
+
