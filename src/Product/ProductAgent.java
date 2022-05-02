@@ -1,6 +1,7 @@
 package Product;
 
 import Resource.ResourceAgent;
+import Resource.SkillExecutionResponse;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SequentialBehaviour;
@@ -20,7 +21,8 @@ public class ProductAgent extends Agent {
     ArrayList<String> executionPlan = new ArrayList<>();
     ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
     DFAgentDescription reservedResource = null;
-    AID reservedAgent = null;
+    ACLMessage msgExecuteSkill = new ACLMessage(ACLMessage.REQUEST);
+    String currentSkill = "sk_q_c";
 
 
 
@@ -39,8 +41,12 @@ public class ProductAgent extends Agent {
         // of its own production
 
         SequentialBehaviour sb = new SequentialBehaviour();
-        sb.addSubBehaviour(new GetSkillfullAgent(this,"sk_q_c"));
-        sb.addSubBehaviour(new SkillNegotiation(this, cfp));
+        for(int i = 0; i < executionPlan.size(); i++) {
+
+            sb.addSubBehaviour(new GetSkillfullAgent(this, currentSkill));
+            sb.addSubBehaviour(new SkillNegotiation(this, cfp));
+            sb.addSubBehaviour(new SkillExecutionRequest(this, msgExecuteSkill));
+        }
         this.addBehaviour(sb);
         
     }

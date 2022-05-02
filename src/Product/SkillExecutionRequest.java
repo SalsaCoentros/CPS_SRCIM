@@ -14,8 +14,6 @@ public class SkillExecutionRequest extends AchieveREInitiator{
     public SkillExecutionRequest(Agent a, ACLMessage msg){
 
         super(a, msg);
-
-
     }
 
     @Override

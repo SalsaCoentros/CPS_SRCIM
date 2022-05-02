@@ -16,6 +16,9 @@ public class SkillExecutionResponse extends AchieveREResponder {
 
     @Override
     protected ACLMessage handleRequest (ACLMessage request) throws NotUnderstoodException, RefuseException{
+        String skill = request.getContent();
+        System.out.println(myAgent.getLocalName() + " is about to execute the skill: " + skill);
+        //falta iniciar a skill aqui
         System.out.println(myAgent.getLocalName() + ": Processing REQUEST message");
         ACLMessage msg = request.createReply();
         msg.setPerformative(ACLMessage.AGREE);
@@ -25,8 +28,8 @@ public class SkillExecutionResponse extends AchieveREResponder {
     @Override
     protected ACLMessage prepareResultNotification (ACLMessage request, ACLMessage response) throws FailureException{
         ((ResourceAgent)myAgent).reserved = false;
-        System.out.println(myAgent.getLocalName() + ": Preparing result of REQUEST");
         block(5000); //mudar para executar a skill
+        System.out.println(myAgent.getLocalName() + " has done the skill");
         ACLMessage msg = request.createReply();
         msg.setPerformative(ACLMessage.INFORM);
         return msg;
