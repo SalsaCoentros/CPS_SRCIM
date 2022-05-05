@@ -65,10 +65,5 @@ import java.util.Vector;
                 acceptances.add(reply);
             }
         }
-
-
     }
 //}
-
-
-

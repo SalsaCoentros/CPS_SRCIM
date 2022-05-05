@@ -1,5 +1,9 @@
 package Transport;
 
+import Product.GetSkillfullAgent;
+import Product.getTransport;
+import Resource.OfferSkill;
+import Resource.SkillExecutionResponse;
 import Utilities.Constants;
 import jade.core.Agent;
 import java.util.Arrays;
@@ -7,6 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import Libraries.ITransport;
 import jade.domain.FIPAException;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 /**
  *
@@ -17,6 +23,7 @@ public class TransportAgent extends Agent {
     String id;
     ITransport myLib;
     String description;
+    ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
     String[] associatedSkills;
     boolean reserved = false;
 
@@ -49,6 +56,9 @@ public class TransportAgent extends Agent {
             ex.printStackTrace();
         }
         // TO DO: Add responder behaviour/s
+        this.addBehaviour(new GetSkillfullAgent(this));
+        this.addBehaviour(new getTransport(this, cfp));
+        this.addBehaviour(new offerTransport(this,MessageTemplate.MatchPerformative(ACLMessage.CFP)));
     }
 
     @Override
