@@ -34,18 +34,18 @@ import java.util.Vector;
 
                 if (msg.getPerformative() == ACLMessage.PROPOSE) { //if their response is a proposition
                     System.out.println(msg.getSender().getLocalName() + " sent a proposition.");
-                }
 
-                int proposal_value = Integer.parseInt(msg.getContent());
+                    int proposal_value = Integer.parseInt(msg.getContent());
 
-                if (best_proposal == 6) {
-                    best_proposal = proposal_value;
-                    best_transport = i;
-                }
+                    if (best_proposal == 6) {
+                        best_proposal = proposal_value;
+                        best_transport = i;
+                    }
 
-                if (proposal_value < 6) {
-                    best_transport = i;
-                    best_proposal = proposal_value;
+                    if (proposal_value < 6) {
+                        best_transport = i;
+                        best_proposal = proposal_value;
+                    }
                 }
 
             }

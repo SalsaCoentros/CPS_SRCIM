@@ -23,7 +23,6 @@ public class TransportAgent extends Agent {
     String id;
     ITransport myLib;
     String description;
-    ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
     String[] associatedSkills;
     boolean reserved = false;
 
@@ -56,9 +55,8 @@ public class TransportAgent extends Agent {
             ex.printStackTrace();
         }
         // TO DO: Add responder behaviour/s
-        this.addBehaviour(new GetSkillfullAgent(this));
-        this.addBehaviour(new getTransport(this, cfp));
         this.addBehaviour(new offerTransport(this,MessageTemplate.MatchPerformative(ACLMessage.CFP)));
+        //this.addBehaviour(new TransportExecutionResponse(this, MessageTemplate.MatchPerformative((ACLMessage.REQUEST))));
     }
 
     @Override
