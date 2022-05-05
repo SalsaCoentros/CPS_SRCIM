@@ -17,8 +17,8 @@ public class newExecPlanStep extends SimpleBehaviour {
         ((ProductAgent)myAgent).msgExecuteSkill.clearAllReceiver();
         ((ProductAgent)myAgent).cfp.clearAllReceiver();
         ((ProductAgent)myAgent).cfp.clearAllReplyTo();
-        System.out.println(skill);
         ((ProductAgent)myAgent).currentSkill = skill;
+        ((ProductAgent)myAgent).skillReserved = false;
     }
 
     @Override

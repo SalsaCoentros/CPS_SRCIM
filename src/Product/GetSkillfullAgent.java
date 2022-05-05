@@ -16,6 +16,9 @@ public class GetSkillfullAgent extends SimpleBehaviour {
 
     @Override
     public void action() {
+        ((ProductAgent)myAgent).cfp.clearAllReceiver();
+        ((ProductAgent)myAgent).cfp.clearAllReplyTo();
+
         getCompetentAgents();
 
         finished = true;
@@ -29,13 +32,22 @@ public class GetSkillfullAgent extends SimpleBehaviour {
     // Returns a list of agents registered in the DF with a given skill
     private void getCompetentAgents () {
         //ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
-        DFAgentDescription [] SkillfulAgents = null;
+        DFAgentDescription[] SkillfulAgents = null;
+        String askedSkill = null;
+
+        if (!((ProductAgent) myAgent).skillReserved) {
+            askedSkill = ((ProductAgent) myAgent).currentSkill;
+        }
+        else {
+            askedSkill = "sk_move";
+        }
 
         try {
-            SkillfulAgents = DFInteraction.SearchInDFByName(((ProductAgent)myAgent).currentSkill,myAgent);
+            SkillfulAgents = DFInteraction.SearchInDFByName(askedSkill, myAgent);
         } catch (FIPAException e) {
             e.printStackTrace();
         }
+
         if ( SkillfulAgents.length != 0 ) {
             System.out.println("List of agents that can execute the skill " + ((ProductAgent)myAgent).currentSkill + " : ");
             for (int i = 0; i < SkillfulAgents.length; i++) {

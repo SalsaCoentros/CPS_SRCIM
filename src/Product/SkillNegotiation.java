@@ -62,22 +62,14 @@ public class SkillNegotiation extends ContractNetInitiator {
                 acceptances.add(reply);
             }
 
+            ((ProductAgent) myAgent).skillReserved = true;
+
             String agentName = ((ACLMessage)response.get(best_resource)).getSender().getLocalName();
 
             ((ProductAgent)myAgent).msgExecuteSkill.addReceiver(new AID(agentName,false));
             ((ProductAgent)myAgent).msgExecuteSkill.setContent(((ProductAgent)myAgent).currentSkill);
         }
 
-
-
-        /*
-        ACLMessage auxMsg = (ACLMessage)response.get(0);
-        System.out.println(((ACLMessage) response.get(0)).getSender().getLocalName());
-        ACLMessage reply = auxMsg.createReply();
-        reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-        acceptances.add(reply);
-
-         */
     }
 
 }
