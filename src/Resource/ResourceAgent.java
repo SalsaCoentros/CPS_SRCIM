@@ -24,6 +24,7 @@ public class ResourceAgent extends Agent {
     String[] associatedSkills;
     String location;
     boolean reserved = false;
+    String reservedSkill = null;
 
     @Override
     protected void setup() {

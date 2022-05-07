@@ -1,9 +1,6 @@
 package Product;
 
-import Utilities.DFInteraction;
 import jade.core.Agent;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
 
@@ -18,7 +15,8 @@ import java.util.Vector;
 
         @Override
         protected void handleInform(ACLMessage inform){
-            System.out.println(myAgent.getLocalName() + ": INFORM message received");
+            ((ProductAgent)myAgent).transportDone = true;
+            ((ProductAgent) myAgent).currentLocation = ((ProductAgent) myAgent).nextLocation;
         }
 
         @Override
@@ -27,13 +25,13 @@ import java.util.Vector;
             int best_proposal = 6;
             int best_transport = -1;
 
-            System.out.println(myAgent.getLocalName() + ": ALL PROPOSALS received");
+            //System.out.println(myAgent.getLocalName() + ": ALL PROPOSALS received");
 
             for (int i = 0; i<responses.size(); i++) {
                 ACLMessage msg = (ACLMessage) responses.get(i);
 
                 if (msg.getPerformative() == ACLMessage.PROPOSE) { //if their response is a proposition
-                    System.out.println(msg.getSender().getLocalName() + " sent a proposition.");
+                    //System.out.println(msg.getSender().getLocalName() + " sent a proposition.");
 
                     int proposal_value = Integer.parseInt(msg.getContent());
 
@@ -64,6 +62,9 @@ import java.util.Vector;
 
                 acceptances.add(reply);
             }
+
         }
+
+
     }
 //}

@@ -1,11 +1,12 @@
 package Product;
 
+import Utilities.Constants;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
 
-import java.util.Enumeration;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 public class SkillNegotiation extends ContractNetInitiator {
@@ -16,7 +17,7 @@ public class SkillNegotiation extends ContractNetInitiator {
 
     @Override
     protected void handleInform(ACLMessage inform) {
-        System.out.println(myAgent.getLocalName() + ": INFORM message received");
+        //System.out.println(myAgent.getLocalName() + ": INFORM message received");
     }
 
     @Override
@@ -24,24 +25,30 @@ public class SkillNegotiation extends ContractNetInitiator {
 
         int best_proposal = 0;
         int best_resource = -1;
-        System.out.println(myAgent.getLocalName() + ": ALL PROPOSALS received");
+        //System.out.println(myAgent.getLocalName() + ": ALL PROPOSALS received");
 
         for (int i = 0; i<response.size(); i++) {
              ACLMessage msg = (ACLMessage)response.get(i);
 
              if (msg.getPerformative() == ACLMessage.PROPOSE) { //if their response is a proposition
-                 System.out.println(msg.getSender().getLocalName() + " sent a proposition.");
+                 //System.out.println(msg.getSender().getLocalName() + " sent a proposition.");
 
-                 int proposal_value = Integer.parseInt(msg.getContent());
+                 StringTokenizer content = new StringTokenizer(msg.getContent(), Constants.TOKEN);
+                 String performance_value = content.nextToken();
+
+
+                 int proposal_value = Integer.parseInt(performance_value);
 
                  if (best_proposal == 0) {
                      best_proposal = proposal_value;
                      best_resource = i;
+                     ((ProductAgent)myAgent).nextLocation = content.nextToken();
                  }
 
                  if (proposal_value < best_proposal) {
                      best_resource = i;
                      best_proposal = proposal_value;
+                     ((ProductAgent)myAgent).nextLocation = content.nextToken();
                  }
 
              }

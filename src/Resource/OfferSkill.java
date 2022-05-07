@@ -1,5 +1,6 @@
 package Resource;
 
+import Utilities.Constants;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -12,24 +13,26 @@ import java.util.Random;
 
 public class OfferSkill extends ContractNetResponder {
 
-
     public OfferSkill(Agent a, MessageTemplate mt) {
         super(a, mt);
     }
 
     @Override
-    protected ACLMessage handleCfp (ACLMessage cfp) throws RefuseException, FailureException, NotUnderstoodException {
+    protected ACLMessage handleCfp (ACLMessage cfp) {
         //System.out.println(myAgent.getLocalName() + ": Processing CFP message");
 
         ACLMessage msg = cfp.createReply();
 
         if ( !((ResourceAgent)myAgent).reserved ) { //if the resource agent is not yet reserved
+
+            ((ResourceAgent)myAgent).reservedSkill = cfp.getContent();
+
             msg.setPerformative(ACLMessage.PROPOSE);
             Random rand = new Random();
 
-            String timeProduction = Integer.toString((int) rand.nextInt(100) + 1);
-            System.out.println(myAgent.getLocalName() + " informs that it takes: " + timeProduction + " to do the requested skill");
-            msg.setContent(timeProduction); //sends a random value (between 1 and 100) considered as the time (in sec's) it takes to do a certain skill
+            String timeProduction = Integer.toString(rand.nextInt(100) + 1);
+            //System.out.println(myAgent.getLocalName() + " informs that it takes: " + timeProduction + " to do the requested skill");
+            msg.setContent(timeProduction + Constants.TOKEN + ((ResourceAgent)myAgent).location); //sends a random value (between 1 and 100) considered as the time (in sec's) it takes to do a certain skill
         }
         else {
             msg.setPerformative(ACLMessage.REFUSE);
@@ -39,10 +42,8 @@ public class OfferSkill extends ContractNetResponder {
     }
 
     @Override
-    protected ACLMessage handleAcceptProposal (ACLMessage cfp, ACLMessage propose, ACLMessage accept) throws FailureException {
+    protected ACLMessage handleAcceptProposal (ACLMessage cfp, ACLMessage propose, ACLMessage accept) {
         ((ResourceAgent)myAgent).reserved = true;
-        System.out.println(myAgent.getLocalName() + ": Preparing result of CFP");
-        block(5000);
         ACLMessage msg = cfp.createReply();
         msg.setPerformative(ACLMessage.INFORM);
         return msg;

@@ -1,14 +1,10 @@
 package Product;
 
-import Resource.ResourceAgent;
-import Resource.SkillExecutionResponse;
-import jade.core.AID;
+
 import jade.core.Agent;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.gui.DFAgentDscDlg;
 import jade.lang.acl.ACLMessage;
-
 import java.util.ArrayList;
 
 /**
@@ -23,7 +19,11 @@ public class ProductAgent extends Agent {
     DFAgentDescription reservedResource = null;
     ACLMessage msgExecuteSkill = new ACLMessage(ACLMessage.REQUEST);
     String currentSkill = null;
+    String currentLocation = "Source"; //this has to be changed, it limits the number of sources
+    String nextLocation = null;
     boolean skillReserved = false;
+    boolean transportDone = false;
+    boolean skillDone = false;
 
 
 
@@ -42,14 +42,17 @@ public class ProductAgent extends Agent {
         // of its own production
 
         SequentialBehaviour sb = new SequentialBehaviour();
-        for(int i = 0; i < executionPlan.size(); i++) {
-            sb.addSubBehaviour(new newExecPlanStep(this, executionPlan.get(i)));
+        for (String s : executionPlan) {
+            sb.addSubBehaviour(new newExecPlanStep(this, s));
             sb.addSubBehaviour(new GetSkillfullAgent(this));
             sb.addSubBehaviour(new SkillNegotiation(this, cfp));
-            sb.addSubBehaviour(new GetSkillfullAgent(this));
-            sb.addSubBehaviour(new getTransport(this, cfp));
-            sb.addSubBehaviour(new SkillExecutionRequest(this, msgExecuteSkill));
+            //sb.addSubBehaviour(new GetSkillfullAgent(this));
+            sb.addSubBehaviour(new checkTransportation());
+            //sb.addSubBehaviour(new getTransport(this, cfp));
+            //sb.addSubBehaviour(new SkillExecutionRequest(this, msgExecuteSkill));
+            sb.addSubBehaviour(new SkillExecution());
         }
+        sb.addSubBehaviour(new DestroyProduct());
         this.addBehaviour(sb);
         
     }
@@ -60,12 +63,12 @@ public class ProductAgent extends Agent {
     }
     
     private ArrayList<String> getExecutionList(String productType){
-        switch(productType){
-            case "A": return Utilities.Constants.PROD_A;
-            case "B": return Utilities.Constants.PROD_B;
-            case "C": return Utilities.Constants.PROD_C;
-        }
-        return null;
+        return switch (productType) {
+            case "A" -> Utilities.Constants.PROD_A;
+            case "B" -> Utilities.Constants.PROD_B;
+            case "C" -> Utilities.Constants.PROD_C;
+            default -> null;
+        };
     }
     
 }

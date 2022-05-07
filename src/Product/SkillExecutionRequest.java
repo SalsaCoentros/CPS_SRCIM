@@ -1,12 +1,8 @@
 package Product;
 
-import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
-import jade.proto.ContractNetInitiator;
-
-import java.util.Vector;
 
 
 public class SkillExecutionRequest extends AchieveREInitiator{
@@ -18,12 +14,15 @@ public class SkillExecutionRequest extends AchieveREInitiator{
 
     @Override
     protected void handleAgree(ACLMessage agree){
-        System.out.println(myAgent.getLocalName() + ": AGREE message received");
+        //System.out.println(myAgent.getLocalName() + ": AGREE message received");
     }
 
     @Override
     protected void handleInform(ACLMessage inform){
-        System.out.println(myAgent.getLocalName() + ": INFORM message received");
+        ((ProductAgent)myAgent).skillDone = true;
+        System.out.println("Skill done");
+
     }
+
 }
 

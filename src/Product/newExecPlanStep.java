@@ -2,7 +2,6 @@ package Product;
 
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.lang.acl.ACLMessage;
 
 public class newExecPlanStep extends SimpleBehaviour {
 
@@ -19,6 +18,9 @@ public class newExecPlanStep extends SimpleBehaviour {
         ((ProductAgent)myAgent).cfp.clearAllReplyTo();
         ((ProductAgent)myAgent).currentSkill = skill;
         ((ProductAgent)myAgent).skillReserved = false;
+        ((ProductAgent)myAgent).transportDone = false;
+        ((ProductAgent)myAgent).skillDone = false;
+
     }
 
     @Override

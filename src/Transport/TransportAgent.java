@@ -1,9 +1,5 @@
 package Transport;
 
-import Product.GetSkillfullAgent;
-import Product.getTransport;
-import Resource.OfferSkill;
-import Resource.SkillExecutionResponse;
 import Utilities.Constants;
 import jade.core.Agent;
 import java.util.Arrays;

@@ -1,17 +1,17 @@
 package Product;
 
+import Utilities.Constants;
 import Utilities.DFInteraction;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAException;
-import jade.lang.acl.ACLMessage;
 
 public class GetSkillfullAgent extends SimpleBehaviour {
 
     private boolean finished = false;
 
-    public GetSkillfullAgent(Agent a){};
+    public GetSkillfullAgent(Agent a){}
 
 
     @Override
@@ -33,13 +33,15 @@ public class GetSkillfullAgent extends SimpleBehaviour {
     private void getCompetentAgents () {
         //ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
         DFAgentDescription[] SkillfulAgents = null;
-        String askedSkill = null;
+        String askedSkill;
 
         if (!((ProductAgent) myAgent).skillReserved) {
             askedSkill = ((ProductAgent) myAgent).currentSkill;
+            ((ProductAgent)myAgent).cfp.setContent(askedSkill);
         }
         else {
             askedSkill = "sk_move";
+            ((ProductAgent)myAgent).cfp.setContent(((ProductAgent)myAgent).currentLocation + Constants.TOKEN + ((ProductAgent)myAgent).nextLocation);
         }
 
         try {
@@ -48,16 +50,18 @@ public class GetSkillfullAgent extends SimpleBehaviour {
             e.printStackTrace();
         }
 
+        assert SkillfulAgents != null;
         if ( SkillfulAgents.length != 0 ) {
-            System.out.println("List of agents that can execute the skill " + ((ProductAgent)myAgent).currentSkill + " : ");
-            for (int i = 0; i < SkillfulAgents.length; i++) {
-                System.out.println(SkillfulAgents[i].getName().getLocalName());
-                ((ProductAgent)myAgent).cfp.addReceiver(SkillfulAgents[i].getName());
+            //System.out.println("List of agents that can execute the skill: ");
+            for (DFAgentDescription skillfulAgent : SkillfulAgents) {
+                //System.out.println(SkillfulAgents[i].getName().getLocalName());
+                ((ProductAgent) myAgent).cfp.addReceiver(skillfulAgent.getName());
             }
         } else {
             System.out.println("There are no agents with the following skill: " + ((ProductAgent)myAgent).currentSkill);
             // we'll have to abort in this case
         }
+
     }
 
 
