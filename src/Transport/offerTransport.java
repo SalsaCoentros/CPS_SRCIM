@@ -44,13 +44,17 @@ public class offerTransport extends ContractNetResponder {
 
         @Override
         protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept) {
-            ((TransportAgent)myAgent).reserved = true;
-            System.out.println(myAgent.getLocalName() + ": Doing transportation from " + init_position + " to " + dest_position);
-            //block(2000);
-            ((TransportAgent)myAgent).myLib.executeMove(init_position, dest_position, propose.getSender().getLocalName());
             ACLMessage msg = cfp.createReply();
-            //Set a performative which is, in this case, ACLMessage.INFORM
-            msg.setPerformative(ACLMessage.INFORM);
+            if(init_position == dest_position) {
+                //Set a performative which is, in this case, ACLMessage.INFORM
+                msg.setPerformative(ACLMessage.INFORM);
+            }else{
+                ((TransportAgent)myAgent).reserved = true;
+                System.out.println(myAgent.getLocalName() + ": Doing transportation from " + init_position + " to " + dest_position);
+                //block(2000);
+                ((TransportAgent)myAgent).myLib.executeMove(init_position, dest_position, propose.getSender().getLocalName());
+                msg.setPerformative(ACLMessage.INFORM);
+            }
             return msg;
         }
 
