@@ -29,12 +29,12 @@ public class SkillExecutionResponse extends AchieveREResponder {
         ((ResourceAgent)myAgent).reserved = false;
         System.out.println(myAgent.getLocalName() + ": is startin the skill named " + ((ResourceAgent)myAgent).reservedSkill);
 
-        if ((((ResourceAgent)myAgent).reservedSkill).equals(Constants.SK_PICK_UP) || (((ResourceAgent)myAgent).reservedSkill).equals(Constants.SK_DROP)) {
+        /*if ((((ResourceAgent)myAgent).reservedSkill).equals(Constants.SK_PICK_UP) || (((ResourceAgent)myAgent).reservedSkill).equals(Constants.SK_DROP)) {
             block(2000);
         }
-        else {
+        else {*/
             ((ResourceAgent) myAgent).myLib.executeSkill(((ResourceAgent) myAgent).reservedSkill);
-        }
+        //}
         //System.out.println(myAgent.getLocalName() + " has done the skill");
         ACLMessage msg = request.createReply();
         msg.setPerformative(ACLMessage.INFORM);

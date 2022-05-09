@@ -28,16 +28,24 @@ public class offerTransport extends ContractNetResponder {
     protected ACLMessage handleCfp(ACLMessage cfp) {
         ACLMessage msg = cfp.createReply();
 
-        msg.setPerformative(ACLMessage.PROPOSE);
-
-
-        String payloadX = ((TransportAgent)myAgent).payload;      // maximum 10 kg
-        System.out.println(myAgent.getLocalName() + " informs that it has a robot's payload of " + payloadX + "kg");
-        msg.setContent(payloadX); //sends 3 random parameters to find the best option
 
         StringTokenizer content = new StringTokenizer(cfp.getContent(), Constants.TOKEN);
         init_position = content.nextToken();
         dest_position = content.nextToken();
+        int objectWeight = Integer.parseInt(content.nextToken());
+
+        if(((TransportAgent)myAgent).payload > objectWeight && !(((TransportAgent)myAgent).reserved)) {
+
+            msg.setPerformative(ACLMessage.PROPOSE);
+
+
+            String payloadX = String.valueOf(((TransportAgent) myAgent).payload);      // maximum 10 kg
+            System.out.println(myAgent.getLocalName() + " informs that it has a robot's payload of " + payloadX + "kg");
+            msg.setContent(payloadX); //sends 3 random parameters to find the best option
+        } else {
+            msg.setPerformative(ACLMessage.REFUSE);
+        }
+
 
         return msg;
     }
@@ -45,8 +53,9 @@ public class offerTransport extends ContractNetResponder {
         @Override
         protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept) {
             ACLMessage msg = cfp.createReply();
-            if(init_position == dest_position) {
+            if(init_position.equals(dest_position)) {
                 //Set a performative which is, in this case, ACLMessage.INFORM
+                System.out.println(myAgent.getLocalName() + ": Already there");
                 msg.setPerformative(ACLMessage.INFORM);
             }else{
                 ((TransportAgent)myAgent).reserved = true;

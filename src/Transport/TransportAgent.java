@@ -20,7 +20,7 @@ public class TransportAgent extends Agent {
     ITransport myLib;
     String description;
     String[] associatedSkills;
-    String payload;
+    int payload;
     boolean reserved = false;
 
     @Override
@@ -28,7 +28,7 @@ public class TransportAgent extends Agent {
         Object[] args = this.getArguments();
         this.id = (String) args[0];
         this.description = (String) args[1];
-        this.payload = (String) args[3];
+        this.payload = Integer.parseInt((String)args[3]);
 
         //Load hw lib
         try {

@@ -24,7 +24,7 @@ public class ProductAgent extends Agent {
     boolean skillReserved = false;
     boolean transportDone = false;
     boolean skillDone = false;
-    String objectWeight = Integer.toString(6);
+    int objectWeight = 6;
 
 
 
@@ -47,11 +47,11 @@ public class ProductAgent extends Agent {
             sb.addSubBehaviour(new newExecPlanStep(this, s));
             sb.addSubBehaviour(new GetSkillfullAgent(this));
             sb.addSubBehaviour(new SkillNegotiation(this, cfp));
-            //sb.addSubBehaviour(new GetSkillfullAgent(this));
-            sb.addSubBehaviour(new checkTransportation());
-            //sb.addSubBehaviour(new getTransport(this, cfp));
-            //sb.addSubBehaviour(new SkillExecutionRequest(this, msgExecuteSkill));
-            sb.addSubBehaviour(new SkillExecution());
+            sb.addSubBehaviour(new GetSkillfullAgent(this));
+            //sb.addSubBehaviour(new checkTransportation());
+            sb.addSubBehaviour(new getTransport(this, cfp));
+            sb.addSubBehaviour(new SkillExecutionRequest(this, msgExecuteSkill));
+            //sb.addSubBehaviour(new SkillExecution());
         }
         sb.addSubBehaviour(new DestroyProduct());
         this.addBehaviour(sb);

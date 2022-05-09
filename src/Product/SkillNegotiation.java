@@ -6,6 +6,7 @@ import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
 
+import java.util.Collections;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -25,6 +26,7 @@ public class SkillNegotiation extends ContractNetInitiator {
 
         int best_proposal = 0;
         int best_resource = -1;
+        int best_freq = 0;
         //System.out.println(myAgent.getLocalName() + ": ALL PROPOSALS received");
 
         for (int i = 0; i<response.size(); i++) {
@@ -35,20 +37,33 @@ public class SkillNegotiation extends ContractNetInitiator {
 
                  StringTokenizer content = new StringTokenizer(msg.getContent(), Constants.TOKEN);
                  String performance_value = content.nextToken();
+                 String location = content.nextToken();
+                 String skill1 = content.nextToken();
+                 String skill2 = null;
 
+                 if(content.hasMoreElements()) {
+                     skill2 = content.nextToken();
+                 }
+
+                 int freq = Collections.frequency(((ProductAgent)myAgent).executionPlan,skill1);
+
+                 if ( skill2 != null)
+                     freq = freq + Collections.frequency(((ProductAgent)myAgent).executionPlan,skill2);
 
                  int proposal_value = Integer.parseInt(performance_value);
 
                  if (best_proposal == 0) {
                      best_proposal = proposal_value;
                      best_resource = i;
-                     ((ProductAgent)myAgent).nextLocation = content.nextToken();
+                     best_freq = freq;
+                     ((ProductAgent)myAgent).nextLocation = location;
                  }
 
-                 if (proposal_value < best_proposal) {
+                 if (proposal_value < best_proposal && freq >= best_freq) {
                      best_resource = i;
                      best_proposal = proposal_value;
-                     ((ProductAgent)myAgent).nextLocation = content.nextToken();
+                     best_freq = freq;
+                     ((ProductAgent)myAgent).nextLocation = location;
                  }
 
              }

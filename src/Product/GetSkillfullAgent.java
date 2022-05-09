@@ -41,7 +41,7 @@ public class GetSkillfullAgent extends SimpleBehaviour {
         }
         else {
             askedSkill = "sk_move";
-            ((ProductAgent)myAgent).cfp.setContent(((ProductAgent)myAgent).currentLocation + Constants.TOKEN + ((ProductAgent)myAgent).nextLocation);
+            ((ProductAgent)myAgent).cfp.setContent(((ProductAgent)myAgent).currentLocation + Constants.TOKEN + ((ProductAgent)myAgent).nextLocation + Constants.TOKEN + ((ProductAgent)myAgent).objectWeight);
         }
 
         try {
