@@ -24,6 +24,7 @@ public class ProductAgent extends Agent {
     boolean skillReserved = false;
     boolean transportDone = false;
     boolean skillDone = false;
+    String objectWeight = Integer.toString(6);
 
 
 
