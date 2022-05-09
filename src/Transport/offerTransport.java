@@ -29,15 +29,11 @@ public class offerTransport extends ContractNetResponder {
         ACLMessage msg = cfp.createReply();
 
         msg.setPerformative(ACLMessage.PROPOSE);
-        Random rand = new Random();
 
-        String axis_numbers = Integer.toString(rand.nextInt(5)+1);  // maximum 5 axis
-        String payload = Integer.toString(rand.nextInt(11)+1);      // maximum 10 kg
-        String resolution = Integer.toString((int) rand.nextDouble(6)+1); // maximum 5steps resolution
-        //System.out.println(myAgent.getLocalName() + " informs that it has: " + axis_numbers + "axis to do the requested transport and" +
-                //"has a weight capacity of " + payload + "kg with a" + resolution + "steps of resulution");
-        //String parameters = axis_numbers +"#" + payload +"#" + resolution+"#";
-        msg.setContent(axis_numbers); //sends 3 random parameters to find the best option
+
+        String payloadX = ((TransportAgent)myAgent).payload;      // maximum 10 kg
+        System.out.println(myAgent.getLocalName() + " informs that it has a robot's payload of " + payloadX + "kg");
+        msg.setContent(payloadX); //sends 3 random parameters to find the best option
 
         StringTokenizer content = new StringTokenizer(cfp.getContent(), Constants.TOKEN);
         init_position = content.nextToken();
