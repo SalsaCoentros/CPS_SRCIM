@@ -16,24 +16,25 @@ public class SkillNegotiation extends ContractNetInitiator {
         super(a, msg);
     }
 
-    @Override
-    protected void handleInform(ACLMessage inform) {
-        //System.out.println(myAgent.getLocalName() + ": INFORM message received");
-    }
 
     @Override
     protected void handleAllResponses (Vector response, Vector acceptances) {
 
+        int best_resource = getBestOffer (response, acceptances);
+        sendDecision(best_resource,response,acceptances);
+    }
+
+    private int getBestOffer (Vector response, Vector acceptances) {
+
         int best_proposal = 0;
         int best_resource = -1;
         int best_freq = 0;
-        //System.out.println(myAgent.getLocalName() + ": ALL PROPOSALS received");
 
+        //choose the best proposal
         for (int i = 0; i<response.size(); i++) {
              ACLMessage msg = (ACLMessage)response.get(i);
 
              if (msg.getPerformative() == ACLMessage.PROPOSE) { //if their response is a proposition
-                 //System.out.println(msg.getSender().getLocalName() + " sent a proposition.");
 
                  StringTokenizer content = new StringTokenizer(msg.getContent(), Constants.TOKEN);
                  String performance_value = content.nextToken();
@@ -59,39 +60,43 @@ public class SkillNegotiation extends ContractNetInitiator {
                      ((ProductAgent)myAgent).nextLocation = location;
                  }
 
-                 if (proposal_value < best_proposal && freq >= best_freq) {
+                 if (freq > best_freq) {
                      best_resource = i;
                      best_proposal = proposal_value;
                      best_freq = freq;
                      ((ProductAgent)myAgent).nextLocation = location;
                  }
 
+                 if (freq == best_freq && proposal_value < best_proposal) {
+                     best_resource = i;
+                     best_proposal = proposal_value;
+                     best_freq = freq;
+                     ((ProductAgent)myAgent).nextLocation = location;
+                 }
              }
         }
 
-        if (best_resource != -1) {
-
-            for (int i = 0; i < response.size(); i++) {
-                ACLMessage msg = (ACLMessage) response.get(i);
-                ACLMessage reply = msg.createReply();
-
-                if (i == best_resource)  // SEND ACCEPT
-                    reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-
-                else // SEND REFUSE
-                    reply.setPerformative((ACLMessage.REJECT_PROPOSAL));
-
-                acceptances.add(reply);
-            }
-
-            ((ProductAgent) myAgent).skillReserved = true;
-
-            String agentName = ((ACLMessage)response.get(best_resource)).getSender().getLocalName();
-
-            ((ProductAgent)myAgent).msgExecuteSkill.addReceiver(new AID(agentName,false));
-            ((ProductAgent)myAgent).msgExecuteSkill.setContent(((ProductAgent)myAgent).currentSkill);
-        }
-
+        return best_resource;
     }
 
+    private void sendDecision (int best_resource, Vector response, Vector acceptances) {
+
+        for (int i = 0; i < response.size(); i++) {
+            ACLMessage msg = (ACLMessage) response.get(i);
+            ACLMessage reply = msg.createReply();
+
+            if (i == best_resource)  // SEND ACCEPT
+                reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+
+            else // SEND REFUSE
+                reply.setPerformative((ACLMessage.REJECT_PROPOSAL));
+
+            acceptances.add(reply);
+        }
+        ((ProductAgent) myAgent).skillReserved = true;
+
+        String agentName = ((ACLMessage)response.get(best_resource)).getSender().getLocalName();
+        ((ProductAgent)myAgent).msgExecuteSkill.addReceiver(new AID(agentName,false));
+        ((ProductAgent)myAgent).msgExecuteSkill.setContent(((ProductAgent)myAgent).currentSkill);
+    }
 }
