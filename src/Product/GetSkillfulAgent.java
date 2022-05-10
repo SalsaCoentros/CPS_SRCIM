@@ -2,17 +2,13 @@ package Product;
 
 import Utilities.Constants;
 import Utilities.DFInteraction;
-import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAException;
 
-public class GetSkillfullAgent extends SimpleBehaviour {
+public class GetSkillfulAgent extends SimpleBehaviour {
 
     private boolean finished = false;
-
-    public GetSkillfullAgent(Agent a){}
-
 
     @Override
     public void action() {

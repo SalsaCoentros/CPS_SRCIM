@@ -46,15 +46,12 @@ public class TransportAgent extends Agent {
         this.associatedSkills = myLib.getSkills();
         System.out.println("Transport Deployed: " + this.id + " Executes: " + Arrays.toString(associatedSkills));
 
-        // TO DO: Register in DF
         try{
             Utilities.DFInteraction.RegisterInDF(this, this.associatedSkills, Constants.DFSERVICE_TRANSPORT);
         } catch(FIPAException ex){
             ex.printStackTrace();
         }
-        // TO DO: Add responder behaviour/s
         this.addBehaviour(new offerTransport(this,MessageTemplate.MatchPerformative(ACLMessage.CFP)));
-        //this.addBehaviour(new TransportExecutionResponse(this, MessageTemplate.MatchPerformative((ACLMessage.REQUEST))));
     }
 
     @Override

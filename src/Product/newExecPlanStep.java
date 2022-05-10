@@ -1,12 +1,11 @@
 package Product;
 
-import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 
 public class newExecPlanStep extends SimpleBehaviour {
 
     String skill;
-    public newExecPlanStep (Agent a, String skill){
+    public newExecPlanStep (String skill){
         this.skill = skill;
     }
 
@@ -18,7 +17,6 @@ public class newExecPlanStep extends SimpleBehaviour {
         ((ProductAgent)myAgent).cfp.clearAllReplyTo();
         ((ProductAgent)myAgent).currentSkill = skill;
         ((ProductAgent)myAgent).skillReserved = false;
-        ((ProductAgent)myAgent).transportDone = false;
         ((ProductAgent)myAgent).skillDone = false;
 
     }

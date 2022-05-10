@@ -1,7 +1,5 @@
 package Resource;
 
-import Product.SkillExecutionRequest;
-import Product.SkillNegotiation;
 import jade.core.Agent;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -49,14 +47,12 @@ public class ResourceAgent extends Agent {
         this.associatedSkills = myLib.getSkills();
         System.out.println("Resource Deployed: " + this.id + " Executes: " + Arrays.toString(associatedSkills));
 
-        //TO DO: Register in DF with the corresponding skills as services
         try{
             Utilities.DFInteraction.RegisterInDF(this, this.associatedSkills, Constants.DFSERVICE_RESOURCE);
         } catch(FIPAException ex){
             ex.printStackTrace();
         }
 
-        // TO DO: Add responder behaviour/s
         this.addBehaviour(new OfferSkill(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
         this.addBehaviour(new SkillExecutionResponse(this, MessageTemplate.MatchPerformative((ACLMessage.REQUEST))));
 

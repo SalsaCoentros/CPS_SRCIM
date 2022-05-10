@@ -1,13 +1,6 @@
 package Transport;
-import Product.GetSkillfullAgent;
-import Product.getTransport;
-import Resource.ResourceAgent;
 import Utilities.Constants;
 import jade.core.Agent;
-import jade.core.behaviours.SequentialBehaviour;
-import jade.domain.FIPAAgentManagement.FailureException;
-import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetResponder;
@@ -20,6 +13,7 @@ public class offerTransport extends ContractNetResponder {
 
     String init_position = null;
     String dest_position = null;
+
     public offerTransport(Agent a, MessageTemplate mt){
         super(a, mt);
     }
@@ -28,25 +22,20 @@ public class offerTransport extends ContractNetResponder {
     protected ACLMessage handleCfp(ACLMessage cfp) {
         ACLMessage msg = cfp.createReply();
 
-
         StringTokenizer content = new StringTokenizer(cfp.getContent(), Constants.TOKEN);
         init_position = content.nextToken();
         dest_position = content.nextToken();
         int objectWeight = Integer.parseInt(content.nextToken());
 
-        if(((TransportAgent)myAgent).payload > objectWeight && !(((TransportAgent)myAgent).reserved)) {
+        if((((TransportAgent)myAgent).payload > objectWeight) && !(((TransportAgent)myAgent).reserved)) {
 
             msg.setPerformative(ACLMessage.PROPOSE);
-
-
-            String payloadX = String.valueOf(((TransportAgent) myAgent).payload);      // maximum 10 kg
-            System.out.println(myAgent.getLocalName() + " informs that it has a robot's payload of " + payloadX + "kg");
-            msg.setContent(payloadX); //sends 3 random parameters to find the best option
+            Random rand = new Random();
+            String haltTime = Integer.toString(rand.nextInt(100) + 1); //the time that the AGV has been without doing any transportation
+            msg.setContent(haltTime);
         } else {
             msg.setPerformative(ACLMessage.REFUSE);
         }
-
-
         return msg;
     }
 
@@ -60,9 +49,10 @@ public class offerTransport extends ContractNetResponder {
             }else{
                 ((TransportAgent)myAgent).reserved = true;
                 System.out.println(myAgent.getLocalName() + ": Doing transportation from " + init_position + " to " + dest_position);
-                //block(2000);
-                ((TransportAgent)myAgent).myLib.executeMove(init_position, dest_position, propose.getSender().getLocalName());
+                block(2000);
+                //((TransportAgent)myAgent).myLib.executeMove(init_position, dest_position, propose.getSender().getLocalName());
                 msg.setPerformative(ACLMessage.INFORM);
+                ((TransportAgent)myAgent).reserved = false;
             }
             return msg;
         }
