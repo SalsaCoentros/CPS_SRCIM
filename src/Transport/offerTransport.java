@@ -50,6 +50,7 @@ public class offerTransport extends ContractNetResponder {
                 System.out.println(cfp.getSender().getLocalName() + ": " + myAgent.getLocalName() + " Doing transportation from " + init_position + " to " + dest_position);
                 block(2000);
                 //((TransportAgent)myAgent).myLib.executeMove(init_position, dest_position, propose.getSender().getLocalName());
+                System.out.println(cfp.getSender().getLocalName() + ": " + myAgent.getLocalName() + " transportation Done");
                 msg.setPerformative(ACLMessage.INFORM);
                 msg.setContent("true");
                 ((TransportAgent)myAgent).reserved = false;

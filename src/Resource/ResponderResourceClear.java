@@ -16,10 +16,8 @@ public class ResponderResourceClear extends AchieveREResponder {
     protected ACLMessage handleRequest(ACLMessage request) {
         ACLMessage msg = request.createReply();
         msg.setPerformative(ACLMessage.INFORM);
-        if (request.getOntology().equals(Constants.ONTOLOGY_CLEAR_RESOURCE)) {
-            if(request.getContent().equals("true"))
-                ((ResourceAgent) myAgent).reservedTo = null;
-        }
+        if(request.getContent().equals("true"))
+            ((ResourceAgent) myAgent).reservedTo = null;
         return msg;
     }
 }

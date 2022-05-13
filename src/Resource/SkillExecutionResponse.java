@@ -17,15 +17,12 @@ public class SkillExecutionResponse extends AchieveREResponder {
     protected ACLMessage handleRequest (ACLMessage request) {
 
         ACLMessage msg = request.createReply();
+        String skill = request.getContent();
 
-        if (request.getOntology().equals(Constants.ONTOLOGY_EXECUTE_SKILL)) {
-            String skill = request.getContent();
-
-            if (Collections.frequency(List.of((((ResourceAgent) myAgent).associatedSkills)), skill) == 1) {
-                msg.setPerformative(ACLMessage.AGREE);
-            } else {
-                msg.setPerformative(ACLMessage.REFUSE);
-            }
+        if (Collections.frequency(List.of((((ResourceAgent) myAgent).associatedSkills)), skill) == 1) {
+            msg.setPerformative(ACLMessage.AGREE);
+        } else {
+            msg.setPerformative(ACLMessage.REFUSE);
         }
         return msg;
     }
@@ -33,11 +30,9 @@ public class SkillExecutionResponse extends AchieveREResponder {
     @Override
     protected ACLMessage prepareResultNotification (ACLMessage request, ACLMessage response) {
         ACLMessage msg = request.createReply();
-        if (request.getOntology().equals(Constants.ONTOLOGY_EXECUTE_SKILL)) {
-            System.out.println(request.getSender().getLocalName() + ": " + myAgent.getLocalName() + " is starting the skill named " + ((ResourceAgent) myAgent).reservedSkill);
-            //((ResourceAgent) myAgent).myLib.executeSkill(((ResourceAgent) myAgent).reservedSkill);
-            block(5000);
-        }
+        System.out.println(request.getSender().getLocalName() + ": " + myAgent.getLocalName() + " is STARTING the skill: " + ((ResourceAgent) myAgent).reservedSkill);
+        //((ResourceAgent) myAgent).myLib.executeSkill(((ResourceAgent) myAgent).reservedSkill);
+        block(5000);
         msg.setPerformative(ACLMessage.INFORM);
         return msg;
     }

@@ -1,5 +1,6 @@
 package Product;
 
+import Resource.ResourceAgent;
 import Utilities.Constants;
 import jade.core.AID;
 import jade.core.Agent;
@@ -16,8 +17,7 @@ public class SkillExecutionRequest extends AchieveREInitiator{
     @Override
     protected void handleInform(ACLMessage inform){
         ((ProductAgent)myAgent).skillDone = true;
-        System.out.println(((ProductAgent)myAgent).getLocalName() + ": Skill done");
-
+        System.out.println(myAgent.getLocalName() + ": " + inform.getSender().getLocalName() + " has DONE the skill " + ((ProductAgent)myAgent).currentSkill);
         if (((ProductAgent)myAgent).currentSkill.equals(Constants.SK_DROP)) { //create the message to tell the resource that does the drop that it is free
             ((ProductAgent)myAgent).msgInformRes.clearAllReplyTo();
             ((ProductAgent)myAgent).msgInformRes.clearAllReceiver();

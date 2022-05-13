@@ -8,5 +8,4 @@ public class DestroyProduct extends OneShotBehaviour {
     public void action() {
         myAgent.doDelete();
     }
-
 }

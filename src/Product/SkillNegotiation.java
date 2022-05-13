@@ -27,8 +27,8 @@ public class SkillNegotiation extends ContractNetInitiator {
         else { //no proposals
             Vector<ACLMessage> newIt = new Vector<ACLMessage>();
             newIt.add(this.msg);
-            for(int i = 0; i<500000; i++) //the block(1000) doesn't work in here, but this one kinda works
-                block(1);
+            for(int i = 0; i<300000; i++) //the block(1000) doesn't work in here, but this one kinda works
+                block(10);
             this.reset(msg);
             //this.newIteration(newIt);
         }

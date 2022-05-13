@@ -55,8 +55,10 @@ public class ResourceAgent extends Agent {
             ex.printStackTrace();
         }
         this.addBehaviour(new OfferSkill(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
-        this.addBehaviour(new SkillExecutionResponse(this, MessageTemplate.MatchPerformative((ACLMessage.REQUEST))));
-        this.addBehaviour(new ResponderResourceClear(this, MessageTemplate.MatchPerformative((ACLMessage.REQUEST))));
+        this.addBehaviour(new SkillExecutionResponse(this, MessageTemplate.MatchOntology(Constants.ONTOLOGY_EXECUTE_SKILL)));
+        this.addBehaviour(new ResponderResourceClear(this, MessageTemplate.MatchOntology(Constants.ONTOLOGY_CLEAR_RESOURCE)));
+        /*this.addBehaviour(new SkillExecutionResponse(this, MessageTemplate.MatchPerformative((ACLMessage.REQUEST))));
+        this.addBehaviour(new ResponderResourceClear(this, MessageTemplate.MatchPerformative((ACLMessage.REQUEST))));*/
     }
 
     @Override
