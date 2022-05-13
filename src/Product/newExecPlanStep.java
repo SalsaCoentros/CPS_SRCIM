@@ -18,12 +18,12 @@ public class newExecPlanStep extends SimpleBehaviour {
         ((ProductAgent)myAgent).currentSkill = skill;
         ((ProductAgent)myAgent).skillReserved = false;
         ((ProductAgent)myAgent).skillDone = false;
-
+        ((ProductAgent)myAgent).msgInformRes.clearAllReplyTo();
+        ((ProductAgent)myAgent).msgInformRes.clearAllReceiver();
     }
 
     @Override
     public boolean done() {
-        block(1000);
         return true;
     }
 }

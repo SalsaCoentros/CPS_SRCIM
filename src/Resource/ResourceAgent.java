@@ -1,5 +1,6 @@
 package Resource;
 
+import jade.core.AID;
 import jade.core.Agent;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -23,6 +24,7 @@ public class ResourceAgent extends Agent {
     String location;
     boolean reserved = false;
     String reservedSkill = null;
+    AID reservedTo = null;
 
     @Override
     protected void setup() {
@@ -52,10 +54,9 @@ public class ResourceAgent extends Agent {
         } catch(FIPAException ex){
             ex.printStackTrace();
         }
-
         this.addBehaviour(new OfferSkill(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
         this.addBehaviour(new SkillExecutionResponse(this, MessageTemplate.MatchPerformative((ACLMessage.REQUEST))));
-
+        this.addBehaviour(new ResponderResourceClear(this, MessageTemplate.MatchPerformative((ACLMessage.REQUEST))));
     }
 
     @Override

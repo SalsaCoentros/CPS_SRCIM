@@ -16,13 +16,11 @@ public class OfferSkill extends ContractNetResponder {
 
     @Override
     protected ACLMessage handleCfp (ACLMessage cfp) {
-
         ACLMessage msg = cfp.createReply();
 
-        if ( !((ResourceAgent)myAgent).reserved ) { //if the resource agent is not yet reserved
+        if ( (cfp.getSender().equals(((ResourceAgent)myAgent).reservedTo)) || ((ResourceAgent)myAgent).reservedTo == null) { //if the resource agent is not yet reserved
 
             ((ResourceAgent)myAgent).reservedSkill = cfp.getContent();
-
             msg.setPerformative(ACLMessage.PROPOSE);
             Random rand = new Random();
 
@@ -32,20 +30,19 @@ public class OfferSkill extends ContractNetResponder {
                     infoSkills.append(Constants.TOKEN);
                 infoSkills.append(s);
             }
-
             String timeProduction = Integer.toString(rand.nextInt(100) + 1);
             msg.setContent(timeProduction + Constants.TOKEN + ((ResourceAgent)myAgent).location + Constants.TOKEN + infoSkills); //sends a random value (between 1 and 100) considered as the time (in sec's) it takes to do a certain skill
         }
         else {
             msg.setPerformative(ACLMessage.REFUSE);
         }
-
         return msg;
     }
 
     @Override
     protected ACLMessage handleAcceptProposal (ACLMessage cfp, ACLMessage propose, ACLMessage accept) {
         ((ResourceAgent)myAgent).reserved = true;
+        ((ResourceAgent)myAgent).reservedTo = accept.getSender();
         ACLMessage msg = cfp.createReply();
         msg.setPerformative(ACLMessage.INFORM);
         return msg;

@@ -1,5 +1,7 @@
 package Utilities;
 
+import jade.lang.acl.ACLMessage;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -18,6 +20,7 @@ public class Constants {
     public static final String ONTOLOGY_NEGOTIATE_RESOURCE = "ont_neg_res";
     public static final String ONTOLOGY_MOVE = "ont_move";
     public static final String ONTOLOGY_EXECUTE_SKILL = "ont_exec";
+    public static final String ONTOLOGY_CLEAR_RESOURCE = "ont_clear";
     
     //Skills
     public static final String SK_GLUE_TYPE_A = "sk_g_a";
@@ -38,4 +41,5 @@ public class Constants {
 
     //Token
     public static final String TOKEN = "#TOKEN#";
+
 }
