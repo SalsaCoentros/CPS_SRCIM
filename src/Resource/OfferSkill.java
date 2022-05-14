@@ -10,6 +10,11 @@ import java.util.Random;
 
 public class OfferSkill extends ContractNetResponder {
 
+    /*
+    Propose msg: timeProduction + TOKEN + location + TOKEN + associatedSkills (separated with TOKEN)
+    Refuse msg:  reservedToProductType + associatedSkills (separated with TOKEN)
+     */
+
     public OfferSkill(Agent a, MessageTemplate mt) {
         super(a, mt);
     }
@@ -34,6 +39,15 @@ public class OfferSkill extends ContractNetResponder {
             msg.setContent(timeProduction + Constants.TOKEN + ((ResourceAgent)myAgent).location + Constants.TOKEN + infoSkills); //sends a random value (between 1 and 100) considered as the time (in sec's) it takes to do a certain skill
         }
         else {
+            StringBuilder info = new StringBuilder();
+
+            info.append(((ResourceAgent)myAgent).reservedToProductType);
+
+            for (String s : ((ResourceAgent)myAgent).associatedSkills ) {
+                info.append(Constants.TOKEN);
+                info.append(s);
+            }
+            msg.setContent("" + info);
             msg.setPerformative(ACLMessage.REFUSE);
         }
         return msg;
@@ -43,6 +57,7 @@ public class OfferSkill extends ContractNetResponder {
     protected ACLMessage handleAcceptProposal (ACLMessage cfp, ACLMessage propose, ACLMessage accept) {
         ((ResourceAgent)myAgent).reserved = true;
         ((ResourceAgent)myAgent).reservedTo = accept.getSender();
+        ((ResourceAgent)myAgent).reservedToProductType = accept.getContent();
         ACLMessage msg = cfp.createReply();
         msg.setPerformative(ACLMessage.INFORM);
         return msg;

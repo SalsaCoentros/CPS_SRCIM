@@ -15,9 +15,17 @@ public class ResponderResourceClear extends AchieveREResponder {
     @Override
     protected ACLMessage handleRequest(ACLMessage request) {
         ACLMessage msg = request.createReply();
-        msg.setPerformative(ACLMessage.INFORM);
-        if(request.getContent().equals("true"))
+        msg.setPerformative(ACLMessage.AGREE);
+        if(request.getContent().equals("true")) {
             ((ResourceAgent) myAgent).reservedTo = null;
+            ((ResourceAgent)myAgent).reservedToProductType = "0";
+        }
+        return msg;
+    }
+
+    protected ACLMessage prepareResultNotification (ACLMessage request, ACLMessage response) {
+        ACLMessage msg = request.createReply();
+        msg.setPerformative(ACLMessage.INFORM);
         return msg;
     }
 }

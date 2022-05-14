@@ -16,8 +16,6 @@ public class GetSkillfulAgent extends SimpleBehaviour {
         ((ProductAgent)myAgent).cfp.clearAllReplyTo();
 
         getCompetentAgents();
-
-        finished = true;
     }
 
     @Override
@@ -53,9 +51,10 @@ public class GetSkillfulAgent extends SimpleBehaviour {
                 //System.out.println(SkillfulAgents[i].getName().getLocalName());
                 ((ProductAgent) myAgent).cfp.addReceiver(skillfulAgent.getName());
             }
+            finished = true;
         } else {
             System.out.println("There are no agents with the following skill: " + ((ProductAgent)myAgent).currentSkill);
-            // we'll have to abort in this case
+            finished = false;
         }
 
     }

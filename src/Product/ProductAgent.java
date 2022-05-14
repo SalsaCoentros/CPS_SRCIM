@@ -24,12 +24,15 @@ public class ProductAgent extends Agent {
     String currentSkillReservedFrom = null;
     boolean skillDone = false;
     int objectWeight = 6;
+    String productType;
     
     @Override
     protected void setup() {
         Object[] args = this.getArguments();
         this.id = (String) args[0];
         this.executionPlan = this.getExecutionList((String) args[1]);
+
+        this.productType = (String) args[1];
 
         System.out.println("Product launched: " + this.id + " Requires: " + executionPlan);
         SequentialBehaviour sb = new SequentialBehaviour();

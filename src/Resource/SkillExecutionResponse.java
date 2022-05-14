@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SkillExecutionResponse extends AchieveREResponder {
+
     public SkillExecutionResponse(Agent a, MessageTemplate mt) {
         super(a, mt);
     }
@@ -31,8 +32,8 @@ public class SkillExecutionResponse extends AchieveREResponder {
     protected ACLMessage prepareResultNotification (ACLMessage request, ACLMessage response) {
         ACLMessage msg = request.createReply();
         System.out.println(request.getSender().getLocalName() + ": " + myAgent.getLocalName() + " is STARTING the skill: " + ((ResourceAgent) myAgent).reservedSkill);
-        //((ResourceAgent) myAgent).myLib.executeSkill(((ResourceAgent) myAgent).reservedSkill);
-        block(5000);
+        ((ResourceAgent) myAgent).myLib.executeSkill(((ResourceAgent) myAgent).reservedSkill);
+        //block(5000);
         msg.setPerformative(ACLMessage.INFORM);
         return msg;
     }

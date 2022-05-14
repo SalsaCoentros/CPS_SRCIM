@@ -18,6 +18,10 @@ public class offerTransport extends ContractNetResponder {
         super(a, mt);
     }
 
+    /*
+    Propose msg: halt time
+     */
+
     @Override
     protected ACLMessage handleCfp(ACLMessage cfp) {
         ACLMessage msg = cfp.createReply();
@@ -48,8 +52,8 @@ public class offerTransport extends ContractNetResponder {
             }else{
                 ((TransportAgent)myAgent).reserved = true;
                 System.out.println(cfp.getSender().getLocalName() + ": " + myAgent.getLocalName() + " Doing transportation from " + init_position + " to " + dest_position);
-                block(2000);
-                //((TransportAgent)myAgent).myLib.executeMove(init_position, dest_position, propose.getSender().getLocalName());
+                //block(2000);
+                ((TransportAgent)myAgent).myLib.executeMove(init_position, dest_position, propose.getSender().getLocalName());
                 System.out.println(cfp.getSender().getLocalName() + ": " + myAgent.getLocalName() + " transportation Done");
                 msg.setPerformative(ACLMessage.INFORM);
                 msg.setContent("true");

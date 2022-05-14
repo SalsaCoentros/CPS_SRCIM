@@ -25,6 +25,7 @@ public class ResourceAgent extends Agent {
     boolean reserved = false;
     String reservedSkill = null;
     AID reservedTo = null;
+    String reservedToProductType = "0";
 
     @Override
     protected void setup() {
